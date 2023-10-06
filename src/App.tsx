@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import StartContent from "./components/StartContent";
 import { QuizStatus, TState, TAction, ActionType } from "./types";
+import Loader from "./components/Loader";
+import Error from "./components/Error";
 
 const initialState = {
 	questions: [],
@@ -31,7 +33,7 @@ function reducer (state: TState, action: TAction): TState {
 function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const { questions } = state;
+	const { questions, status } = state;
 
 	function handleStart () {
 		console.log('start quiz');
@@ -53,15 +55,21 @@ function App() {
 
 		fetchQuestions();
 	}, []);
+
+	const content = (
+		<StartContent 
+			quizLength={questions.length}
+			onStart={handleStart}
+		/>
+	);
 	
 	return (
 		<div className="app">
 			<Header />
 			<Main>
-				<StartContent 
-					quizLength={questions.length}
-					onStart={handleStart}
-				/>
+				{status === QuizStatus.LOADING && <Loader />}
+				{status === QuizStatus.ERROR && <Error />}
+				{status === QuizStatus.READY && content}
 			</Main>
 		</div>
 	);
