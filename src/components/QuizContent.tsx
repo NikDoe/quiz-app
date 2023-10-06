@@ -1,4 +1,5 @@
-import { Tquestion } from "./Main";
+import { Tquestion } from "../App";
+
 import Quiz from "./Quiz";
 import QuizFooter from "./QuizFooter";
 import QuizHeader from "./QuizHeader";

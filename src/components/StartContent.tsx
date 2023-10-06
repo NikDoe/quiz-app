@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
 import Button from './Button';
 
 type StartContentProps = {
 	quizLength: number;
-	onStart: Dispatch<SetStateAction<boolean>>;
+	onStart: () => void;
 }
 
 function StartContent(props: StartContentProps) {
@@ -18,7 +17,7 @@ function StartContent(props: StartContentProps) {
 			<h3>{quizLength} questions to test your React mastery</h3>
 			<Button
 				className='btn-ui'
-				onClick={() => onStart(true)}
+				onClick={onStart}
 			>
 				Let's start
 			</Button>

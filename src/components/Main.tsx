@@ -1,25 +1,17 @@
-import { useState } from "react";
-import StartContent from "./StartContent";
-import QuizContent from "./QuizContent";
+import { ReactNode } from "react";
 
-import { questions } from '../questions.json';
+type MainProps = {
+	children: ReactNode;
+}
 
-export type Tquestion = typeof questions[number];
-
-function Main () {
-	const [isStart, setIsStart] = useState<boolean>(false);
+function Main (props: MainProps) {
+	const {
+		children
+	} = props;
 
 	return (
 		<main className="main">
-			{isStart 
-				? <QuizContent
-					questions={questions}
-				/> 
-				: <StartContent 
-					quizLength={questions.length}
-					onStart={setIsStart}
-				/>
-			}
+			{children}
 		</main>
 	);
 }
