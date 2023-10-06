@@ -1,16 +1,18 @@
 type QuizHeaderProps = {
 	quizLength: number;
+	index: number;
 }
 
 function QuizHeader (props: QuizHeaderProps) {
 	const {
-		quizLength
+		quizLength,
+		index
 	} = props;
 
 	return (
 		<header className="progress">
 			<progress value="0" max={quizLength}></progress>
-			<p>Question 1 / {quizLength}</p>
+			<p>Question {index + 1} / {quizLength}</p>
 			<p>0 / 280</p>
 		</header>
 	);

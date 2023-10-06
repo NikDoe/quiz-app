@@ -16,11 +16,13 @@ export enum ActionType {
     DATARECEIVED = 'dataReceived',
     DATAFAILED = 'dataFailed',
     START = 'start',
+    NEXTQUESTION = 'nextQuestin',
 }
 
 export type TState = {
     questions: Tquestion[];
     status: QuizStatus;
+    index: number;
 }
 
 export type TAction = {

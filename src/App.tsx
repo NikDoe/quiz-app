@@ -6,10 +6,14 @@ import { QuizStatus, TState, TAction, ActionType } from "./types";
 import Loader from "./components/Loader";
 import Error from "./components/Error";
 import QuizContent from "./components/QuizContent";
+import QuizHeader from "./components/QuizHeader";
+import Quiz from "./components/Quiz";
+import QuizFooter from "./components/QuizFooter";
 
-const initialState = {
+const initialState: TState = {
 	questions: [],
-	status: QuizStatus.LOADING
+	status: QuizStatus.LOADING,
+	index: 0
 };
 
 function reducer (state: TState, action: TAction): TState {
@@ -29,7 +33,13 @@ function reducer (state: TState, action: TAction): TState {
 		case ActionType.START:
 			return {
 				...state,
-				status: QuizStatus.ACTIVE
+				status: QuizStatus.ACTIVE,
+				
+			};
+		case ActionType.NEXTQUESTION:
+			return {
+				...state,
+				index: state.index < 15 ? state.index + 1 : state.index
 			};
 		default:
 			return state;
@@ -39,7 +49,13 @@ function reducer (state: TState, action: TAction): TState {
 function App() {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
-	const { questions, status } = state;
+	const { 
+		questions,
+		status,
+		index
+	} = state;
+
+	const quizLength = questions.length;
 
 	function handleStart () {
 		dispatch({ type: ActionType.START });
@@ -50,8 +66,6 @@ function App() {
 			try {
 				const response = await fetch('http://localhost:9000/questions');
 				const data = await response.json();
-
-				console.log(data);
 				
 				dispatch({ type: ActionType.DATARECEIVED, payload: data });
 			} catch (error) {
@@ -64,15 +78,20 @@ function App() {
 
 	const startContent = (
 		<StartContent 
-			quizLength={questions.length}
+			quizLength={quizLength}
 			onStart={handleStart}
 		/>
 	);
 
 	const quizContent = (
-		<QuizContent
-			questions={questions} 
-		/>
+		<QuizContent>
+			<QuizHeader 
+				quizLength={quizLength}
+				index={index}
+			/>
+			<Quiz currentQuestion={questions[index]} />
+			<QuizFooter dispatch={dispatch} />
+		</QuizContent>
 	);
 	
 	return (

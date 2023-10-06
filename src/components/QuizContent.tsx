@@ -1,21 +1,13 @@
-import { Tquestion } from "../types";
-
-import Quiz from "./Quiz";
-import QuizFooter from "./QuizFooter";
-import QuizHeader from "./QuizHeader";
+import { ReactNode } from "react";
 
 type QuizContentProps = {
-	questions: Tquestion[];
+	children: ReactNode;
 }
 
-function QuizContent (props: QuizContentProps) {
-	const { questions } = props;
-
+function QuizContent ({ children }: QuizContentProps) {
 	return (
 		<>
-			<QuizHeader quizLength={questions.length} />
-			<Quiz />
-			<QuizFooter />
+			{children}
 		</>
 	);
 }
