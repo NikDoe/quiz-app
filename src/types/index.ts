@@ -9,11 +9,13 @@ export enum QuizStatus {
 	LOADING = 'loading',
 	READY = 'ready',
     ERROR = 'error',
+    ACTIVE = 'active',
 }
 
 export enum ActionType {
     DATARECEIVED = 'dataReceived',
     DATAFAILED = 'dataFailed',
+    START = 'start',
 }
 
 export type TState = {

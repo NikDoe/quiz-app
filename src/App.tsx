@@ -5,6 +5,7 @@ import StartContent from "./components/StartContent";
 import { QuizStatus, TState, TAction, ActionType } from "./types";
 import Loader from "./components/Loader";
 import Error from "./components/Error";
+import QuizContent from "./components/QuizContent";
 
 const initialState = {
 	questions: [],
@@ -25,6 +26,11 @@ function reducer (state: TState, action: TAction): TState {
 				...state,
 				status: QuizStatus.ERROR
 			};
+		case ActionType.START:
+			return {
+				...state,
+				status: QuizStatus.ACTIVE
+			};
 		default:
 			return state;
 	}
@@ -36,7 +42,7 @@ function App() {
 	const { questions, status } = state;
 
 	function handleStart () {
-		console.log('start quiz');
+		dispatch({ type: ActionType.START });
 	}
 
 	useEffect(function() {
@@ -56,10 +62,16 @@ function App() {
 		fetchQuestions();
 	}, []);
 
-	const content = (
+	const startContent = (
 		<StartContent 
 			quizLength={questions.length}
 			onStart={handleStart}
+		/>
+	);
+
+	const quizContent = (
+		<QuizContent
+			questions={questions} 
 		/>
 	);
 	
@@ -69,7 +81,8 @@ function App() {
 			<Main>
 				{status === QuizStatus.LOADING && <Loader />}
 				{status === QuizStatus.ERROR && <Error />}
-				{status === QuizStatus.READY && content}
+				{status === QuizStatus.READY && startContent}
+				{status === QuizStatus.ACTIVE && quizContent}
 			</Main>
 		</div>
 	);

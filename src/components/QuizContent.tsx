@@ -1,4 +1,4 @@
-import { Tquestion } from "../App";
+import { Tquestion } from "../types";
 
 import Quiz from "./Quiz";
 import QuizFooter from "./QuizFooter";
