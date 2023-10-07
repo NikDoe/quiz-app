@@ -5,7 +5,7 @@ import Timer from "./Timer";
 
 type QuizFooterProps = {
 	dispatch: Dispatch<TAction>;
-	isAnswer: boolean;
+	answer: number | null;
 	isQuizFinished: boolean;
 	secondsRemaining: number;
 }
@@ -13,20 +13,16 @@ type QuizFooterProps = {
 function QuizFooter (props: QuizFooterProps) {
 	const {
 		dispatch,
-		isAnswer,
+		answer,
 		isQuizFinished,
 		secondsRemaining
 	} = props;
 
 	function handleNextQuestion () {
 		if(isQuizFinished) {
-			dispatch({ type: ActionType.SETHIGHSCORE });
-			dispatch({ type: ActionType.FINISH });
-			return;
+			return dispatch({ type: ActionType.FINISH });
 		}
-
 		dispatch({ type: ActionType.NEXTQUESTION });
-		dispatch({ type: ActionType.SETANSWER, payload: false });
 	}
 
 	const buttonContent = (
@@ -44,7 +40,7 @@ function QuizFooter (props: QuizFooterProps) {
 				secondsRemaining={secondsRemaining}
 				dispatch={dispatch}
 			/>
-			{isAnswer && buttonContent}
+			{answer !== null && buttonContent}
 		</footer>
 	);
 }

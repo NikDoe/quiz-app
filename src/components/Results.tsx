@@ -17,11 +17,17 @@ function Results (props: ResultsProps) {
 		allPoints
 	} = props;
 
-	const emoji = <span>👽</span>;
+	let emoji;
 	const scoreString = `You scored ${score} out of ${allPoints}`;
-	const persents = `(${Math.round(score * 100 / allPoints)}%)`;
+	const persents = Math.round(score * 100 / allPoints);
 
-	const resultsString = ` ${scoreString} ${persents}`;
+	if(persents === 100) emoji = '🎖️';
+	if(persents >= 80 && persents < 100) emoji = '🎉';
+	if(persents >= 50 && persents < 80) emoji = '👍';
+	if(persents >= 0 && persents < 50) emoji = '🤔';
+	if(persents === 0) emoji = '🤦';
+
+	const resultsString = ` ${scoreString} (${persents}%)`;
 
 	function handleRestart () {
 		dispatch({ type: ActionType.RESTART });

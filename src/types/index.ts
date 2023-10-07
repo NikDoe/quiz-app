@@ -18,9 +18,6 @@ export enum ActionType {
     DATAFAILED = 'dataFailed',
     START = 'start',
     SETANSWER = 'setAnswer',
-    SETPROGERSS = 'setProgress',
-    SETSCORE = 'setScore',
-    SETHIGHSCORE = 'setHighScore',
     NEXTQUESTION = 'nextQuestin',
     SETTIMER = 'setTimer',
     FINISH = 'finish',
@@ -31,8 +28,7 @@ export type TState = {
     questions: Tquestion[];
     status: QuizStatus;
     index: number;
-    isAnswer: boolean;
-    progress: number;
+    answer: number | null;
     score: number;
     highScore: number;
     secondsRemaining: number;
@@ -42,10 +38,7 @@ export type TAction =
 { type: ActionType.DATARECEIVED; payload: Tquestion[] } |
 { type: ActionType.DATAFAILED; } |
 { type: ActionType.START; } |
-{ type: ActionType.SETANSWER; payload: boolean} |
-{ type: ActionType.SETPROGERSS; } |
-{ type: ActionType.SETSCORE; payload: number } |
-{ type: ActionType.SETHIGHSCORE; } |
+{ type: ActionType.SETANSWER; payload: number} |
 { type: ActionType.NEXTQUESTION; } |
 { type: ActionType.SETTIMER; } |
 { type: ActionType.FINISH; } |

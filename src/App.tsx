@@ -5,7 +5,6 @@ import StartContent from "./components/StartContent";
 import { QuizStatus, TState, TAction, ActionType } from "./types";
 import Loader from "./components/Loader";
 import Error from "./components/Error";
-import QuizContent from "./components/QuizContent";
 import QuizHeader from "./components/QuizHeader";
 import Quiz from "./components/Quiz";
 import QuizFooter from "./components/QuizFooter";
@@ -15,12 +14,13 @@ const initialState: TState = {
 	questions: [],
 	status: QuizStatus.LOADING,
 	index: 0,
-	progress: 0,
 	score: 0,
 	highScore: 0,
-	isAnswer: false,
-	secondsRemaining: 10
+	answer: null,
+	secondsRemaining: 0
 };
+
+const SECONDS_PER_QUESTION = 60;
 
 function reducer (state: TState, action: TAction): TState {
 	switch (action.type) {
@@ -40,54 +40,48 @@ function reducer (state: TState, action: TAction): TState {
 			return {
 				...state,
 				status: QuizStatus.ACTIVE,
-				
+				secondsRemaining: state.questions.length * SECONDS_PER_QUESTION
 			};
-		case ActionType.SETANSWER:
+		case ActionType.SETANSWER: {
+			const { 
+				correctOption,
+				points
+			} = state.questions[state.index];
+
+			const score = action.payload === correctOption 
+				? state.score + points 
+				: state.score;
+			
 			return {
 				...state,
-				isAnswer: action.payload,
+				answer: action.payload,
+				score 
 			};
-		case ActionType.SETPROGERSS:
-			return {
-				...state,
-				progress: state.progress + 1
-			};
-		case ActionType.SETSCORE:
-			return {
-				...state,
-				score: state.score + action.payload
-			};
-		case ActionType.SETHIGHSCORE:
-			return {
-				...state,
-				highScore: state.highScore > state.score 
-					? state.highScore 
-					: state.score
-			};
+		}
 		case ActionType.NEXTQUESTION:
 			return {
 				...state,
-				index: state.index + 1
+				index: state.index + 1,
+				answer: null
 			};
 		case ActionType.SETTIMER:
 			return {
 				...state,
-				secondsRemaining: state.secondsRemaining - 1
+				secondsRemaining: state.secondsRemaining -1
 			};
 		case ActionType.FINISH:
 			return {
 				...state,
-				status: QuizStatus.FINISH
+				status: QuizStatus.FINISH,
+				highScore: state.highScore > state.score 
+					? state.highScore 
+					: state.score
 			};
 		case ActionType.RESTART:
 			return {
-				...state,
+				...initialState,
+				questions: state.questions,
 				status: QuizStatus.READY,
-				index: 0,
-				progress: 0,
-				score: 0,
-				isAnswer: false,
-				secondsRemaining: 10
 			};
 		default:
 			return state;
@@ -101,10 +95,9 @@ function App() {
 		questions,
 		status,
 		index,
-		progress,
 		score,
 		highScore,
-		isAnswer,
+		answer,
 		secondsRemaining
 	} = state;
 
@@ -135,26 +128,26 @@ function App() {
 	);
 
 	const quizContent = (
-		<QuizContent>
+		<>
 			<QuizHeader 
 				quizLength={quizLength}
 				index={index}
-				progress={progress}
+				answer={answer}
 				score={score}
 				allPoints={allPoints}
 			/>
 			<Quiz 
 				currentQuestion={questions[index]} 
 				dispatch={dispatch}
-				isAnswer={isAnswer}
+				answer={answer}
 			/>
 			<QuizFooter 
 				dispatch={dispatch}
-				isAnswer={isAnswer}
-				isQuizFinished={quizLength === progress}
+				answer={answer}
+				isQuizFinished={quizLength === index + 1}
 				secondsRemaining={secondsRemaining}
 			/>
-		</QuizContent>
+		</>
 	);
 
 	const resultsContent = (

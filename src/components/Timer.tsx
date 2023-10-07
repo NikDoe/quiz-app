@@ -18,7 +18,6 @@ function Timer (props: TimerProps) {
 				dispatch({ type: ActionType.SETTIMER });
 			} else {
 				clearInterval(interval);
-				dispatch({ type: ActionType.SETHIGHSCORE });
 				dispatch({ type: ActionType.FINISH });
 			}
 		}, 1000);
@@ -26,7 +25,7 @@ function Timer (props: TimerProps) {
 		return () => clearInterval(interval);
 	}, [secondsRemaining, dispatch]);
 
-	const minutes = Math.floor(secondsRemaining / 60);
+	const minutes = Math.floor(secondsRemaining / 60).toString().padStart(2, '0');
 	const seconds = (secondsRemaining % 60).toString().padStart(2, '0');
 
 	return (

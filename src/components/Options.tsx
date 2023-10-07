@@ -1,32 +1,34 @@
+import { Dispatch } from "react";
 import Button from "./Button";
+import { ActionType, TAction } from "../types";
 
 type OptionsProps = {
+	dispatch: Dispatch<TAction>;
+	answer: number | null;
     options: string[];
-	onCorrectAnswer: (index: number) => void;
 	correctOption: number;
-	isAnswer: boolean;
 }
 
 function Options (props : OptionsProps) {
 	const {
+		dispatch,
+		answer,
 		options,
-		onCorrectAnswer,
 		correctOption,
-		isAnswer
 	} = props;
 	
 	const optionsArray = options.map((option, index) => {
-		const answerClassName = isAnswer 
-			? `${correctOption === index ? 'correct' : 'wrong'}` 
-			: '';
+		const answerClassName = answer === index ? 'answer' : '';
+		const isCorrect = index === correctOption ? 'correct' : 'wrong';
+		const isAnswered = answer !== null ? `${answerClassName} ${isCorrect}` : '';
+		const optionClassName = `btn-option ${isAnswered}`;
 
-		const optionClassName = `btn-option ${answerClassName}`;
 		return (
 			<Button
 				key={index}
 				className={optionClassName}
-				onClick={() => onCorrectAnswer(index)}
-				disabled={isAnswer}
+				onClick={() => dispatch({ type: ActionType.SETANSWER, payload: index })}
+				disabled={answer !== null}
 			>
 				{option}
 			</Button>
