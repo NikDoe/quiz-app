@@ -1,22 +1,43 @@
+import { Dispatch } from "react";
 import Button from "./Button";
+import { ActionType, TAction } from "../types";
 
-function Results () {
+type ResultsProps = {
+	dispatch: Dispatch<TAction>;
+	score: number;
+	highScore: number;
+	allPoints: number;
+}
+
+function Results (props: ResultsProps) {
+	const {
+		dispatch,
+		score,
+		highScore,
+		allPoints
+	} = props;
+
 	const emoji = <span>👽</span>;
-	const score = `You scored 0 out of 280`;
-	const persents = `(0%)`;
+	const scoreString = `You scored ${score} out of ${allPoints}`;
+	const persents = `(${Math.round(score * 100 / allPoints)}%)`;
 
-	const resultsString = `${emoji} ${score} ${persents}`;
+	const resultsString = ` ${scoreString} ${persents}`;
+
+	function handleRestart () {
+		dispatch({ type: ActionType.RESTART });
+	}
 
 	return (
 		<>
 			<p className="result">
-				{resultsString}    
+				{emoji}{resultsString}    
 			</p>
 			<p className="highscore">
-                Highscore: 0 points
+                Highscore: {highScore} points
 			</p>
 			<Button
 				className="btn-ui"
+				onClick={handleRestart}
 			>
                 Restart quiz
 			</Button>

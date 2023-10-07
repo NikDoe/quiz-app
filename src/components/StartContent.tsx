@@ -1,14 +1,16 @@
+import { Dispatch } from 'react';
 import Button from './Button';
+import { ActionType, TAction } from '../types';
 
 type StartContentProps = {
 	quizLength: number;
-	onStart: () => void;
+	dispatch: Dispatch<TAction>;
 }
 
 function StartContent(props: StartContentProps) {
 	const {
 		quizLength,
-		onStart
+		dispatch
 	} = props;
 
 	return (
@@ -17,7 +19,7 @@ function StartContent(props: StartContentProps) {
 			<h3>{quizLength} questions to test your React mastery</h3>
 			<Button
 				className='btn-ui'
-				onClick={onStart}
+				onClick={() => dispatch({ type: ActionType.START })}
 			>
 				Let's start
 			</Button>

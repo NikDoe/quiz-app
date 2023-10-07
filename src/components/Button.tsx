@@ -4,13 +4,15 @@ type ButtonProps = {
     children: ReactNode;
 	className?: string;
 	onClick?: () => void;
+	disabled? : boolean;
 }
 
 function Button (props: ButtonProps) {
 	const {
 		className = "",
 		children,
-		onClick
+		onClick,
+		disabled
 	} = props;
 
 	const classNameString = `btn ${className}`;
@@ -19,6 +21,7 @@ function Button (props: ButtonProps) {
 		<button 
 			className={classNameString}
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{children}
 		</button>

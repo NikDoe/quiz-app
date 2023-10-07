@@ -1,29 +1,50 @@
 import { Dispatch } from "react";
 import { ActionType, TAction } from "../types";
 import Button from "./Button";
+import Timer from "./Timer";
 
 type QuizFooterProps = {
-	dispatch: Dispatch<TAction>
+	dispatch: Dispatch<TAction>;
+	isAnswer: boolean;
+	isQuizFinished: boolean;
+	secondsRemaining: number;
 }
 
 function QuizFooter (props: QuizFooterProps) {
 	const {
-		dispatch
+		dispatch,
+		isAnswer,
+		isQuizFinished,
+		secondsRemaining
 	} = props;
 
-	// function handleNextQuestion () {
+	function handleNextQuestion () {
+		if(isQuizFinished) {
+			dispatch({ type: ActionType.SETHIGHSCORE });
+			dispatch({ type: ActionType.FINISH });
+			return;
+		}
 
-	// }
+		dispatch({ type: ActionType.NEXTQUESTION });
+		dispatch({ type: ActionType.SETANSWER, payload: false });
+	}
+
+	const buttonContent = (
+		<Button 
+			className="btn-ui"
+			onClick={handleNextQuestion}
+		>
+			{isQuizFinished ? 'Finish' : 'Next'}
+		</Button>
+	);
 
 	return (
 		<footer>
-			<div className="timer">timer</div>
-			<Button 
-				className="btn-ui"
-				onClick={() => dispatch({ type: ActionType.NEXTQUESTION })}
-			>
-				Next
-			</Button>
+			<Timer
+				secondsRemaining={secondsRemaining}
+				dispatch={dispatch}
+			/>
+			{isAnswer && buttonContent}
 		</footer>
 	);
 }
