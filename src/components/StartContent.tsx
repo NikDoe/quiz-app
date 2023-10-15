@@ -1,22 +1,15 @@
-import { Dispatch } from 'react';
+import { useQuiz } from '../context/useQuiz';
+import { ActionType } from '../types';
+
 import Button from './Button';
-import { ActionType, TAction } from '../types';
 
-type StartContentProps = {
-	quizLength: number;
-	dispatch: Dispatch<TAction>;
-}
-
-function StartContent(props: StartContentProps) {
-	const {
-		quizLength,
-		dispatch
-	} = props;
+function StartContent() {
+	const { questions, dispatch } = useQuiz();
 
 	return (
 		<div className="start">
 			<h2>Welcome to The React Quiz!</h2>
-			<h3>{quizLength} questions to test your React mastery</h3>
+			<h3>{questions.length} questions to test your React mastery</h3>
 			<Button
 				className='btn-ui'
 				onClick={() => dispatch({ type: ActionType.START })}

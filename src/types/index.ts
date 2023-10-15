@@ -1,3 +1,5 @@
+import { Dispatch } from "react";
+
 export type Tquestion = {
     question: string;
     options: string[];
@@ -43,3 +45,8 @@ export type TAction =
 { type: ActionType.SETTIMER; } |
 { type: ActionType.FINISH; } |
 { type: ActionType.RESTART; }
+
+export interface TContextValue extends TState {
+    allPoints: number,
+    dispatch: Dispatch<TAction>,
+}

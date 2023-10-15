@@ -1,22 +1,19 @@
-import { Dispatch } from "react";
-import { ActionType, TAction } from "../types";
+import { useQuiz } from "../context/useQuiz";
+import { ActionType } from "../types";
+
 import Button from "./Button";
 import Timer from "./Timer";
 
-type QuizFooterProps = {
-	dispatch: Dispatch<TAction>;
-	answer: number | null;
-	isQuizFinished: boolean;
-	secondsRemaining: number;
-}
-
-function QuizFooter (props: QuizFooterProps) {
+function QuizFooter () {
 	const {
-		dispatch,
 		answer,
-		isQuizFinished,
-		secondsRemaining
-	} = props;
+		dispatch,
+		index,
+		questions,
+		secondsRemaining,
+	} = useQuiz();
+
+	const isQuizFinished = questions.length === index + 1;
 
 	function handleNextQuestion () {
 		if(isQuizFinished) {

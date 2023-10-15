@@ -1,16 +1,12 @@
-import { Dispatch, useEffect } from "react";
-import { ActionType, TAction } from "../types";
+import { useEffect } from "react";
+import { ActionType } from "../types";
+import { useQuiz } from "../context/useQuiz";
 
-type TimerProps = {
-    secondsRemaining: number;
-    dispatch: Dispatch<TAction>;
-}
-
-function Timer (props: TimerProps) {
+function Timer () {
 	const {
-		secondsRemaining,
-		dispatch
-	} = props;
+		dispatch,
+		secondsRemaining
+	} = useQuiz();
 
 	useEffect(() => {
 		const interval = setInterval(() => {

@@ -1,24 +1,18 @@
-type QuizHeaderProps = {
-	quizLength: number;
-	index: number;
-	answer: number | null;
-	score: number;
-	allPoints: number;
-}
+import { useQuiz } from "../context/useQuiz";
 
-function QuizHeader (props: QuizHeaderProps) {
+function QuizHeader () {
 	const {
-		quizLength,
+		allPoints,
+		questions,
 		index,
 		answer,
-		score,
-		allPoints
-	} = props;
+		score
+	} = useQuiz();
 
 	return (
 		<header className="progress">
-			<progress value={index + Number(answer !== null)} max={quizLength}></progress>
-			<p>Question {index + 1} / {quizLength}</p>
+			<progress value={index + Number(answer !== null)} max={questions.length}></progress>
+			<p>Question {index + 1} / {questions.length}</p>
 			<p>{score} / {allPoints}</p>
 		</header>
 	);

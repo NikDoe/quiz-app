@@ -1,21 +1,17 @@
-import { Dispatch } from "react";
+import { useQuiz } from "../context/useQuiz";
+import { ActionType } from "../types";
+
 import Button from "./Button";
-import { ActionType, TAction } from "../types";
 
-type OptionsProps = {
-	dispatch: Dispatch<TAction>;
-	answer: number | null;
-    options: string[];
-	correctOption: number;
-}
-
-function Options (props : OptionsProps) {
+function Options () {
 	const {
-		dispatch,
 		answer,
-		options,
-		correctOption,
-	} = props;
+		dispatch,
+		index,
+		questions
+	} = useQuiz();
+
+	const { options, correctOption } = questions[index];
 	
 	const optionsArray = options.map((option, index) => {
 		const answerClassName = answer === index ? 'answer' : '';

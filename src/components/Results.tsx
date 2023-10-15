@@ -1,21 +1,15 @@
-import { Dispatch } from "react";
+import { useQuiz } from "../context/useQuiz";
+import { ActionType } from "../types";
+
 import Button from "./Button";
-import { ActionType, TAction } from "../types";
 
-type ResultsProps = {
-	dispatch: Dispatch<TAction>;
-	score: number;
-	highScore: number;
-	allPoints: number;
-}
-
-function Results (props: ResultsProps) {
+function Results () {
 	const {
-		dispatch,
+		allPoints,
 		score,
 		highScore,
-		allPoints
-	} = props;
+		dispatch
+	} = useQuiz();
 
 	let emoji;
 	const scoreString = `You scored ${score} out of ${allPoints}`;
