@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useReducer } from "react";
+import { ReactNode, useCallback, useReducer } from "react";
 import { QuizContext, initialState } from "./QuizContext";
 import { ActionType, QuizStatus, TAction, TContextValue, TState } from "../types";
 
@@ -87,19 +87,15 @@ function QuizProvider({ children }: QuizProviderProps) {
 		secondsRemaining
 	} = state;
 
-	useEffect(function(){
-		async function fetchQuestions() {
-			try {
-				const response = await fetch('http://localhost:9000/questions');
-				const data = await response.json();
-				
-				dispatch({ type: ActionType.DATARECEIVED, payload: data });
-			} catch (error) {
-				dispatch({ type: ActionType.DATAFAILED });
-			}
+	const fetchQuestions = useCallback(async function fetchQuestions() {
+		try {
+			const response = await fetch('http://localhost:9000/questions');
+			const data = await response.json();
+			
+			dispatch({ type: ActionType.DATARECEIVED, payload: data });
+		} catch (error) {
+			dispatch({ type: ActionType.DATAFAILED });
 		}
-
-		fetchQuestions();
 	}, []);
 
 	const allPoints = questions.reduce((acc, curr) => acc + curr.points, 0);
@@ -113,6 +109,7 @@ function QuizProvider({ children }: QuizProviderProps) {
 		answer,
 		secondsRemaining,
 		allPoints,
+		fetchQuestions,
 		dispatch,
 	};
 

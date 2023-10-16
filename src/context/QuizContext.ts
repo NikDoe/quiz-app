@@ -14,6 +14,7 @@ export const initialState: TState = {
 const quizContextValue: TContextValue = {
 	...initialState,
 	allPoints: 0,
+	fetchQuestions: async () => {},
 	dispatch: () => {},
 };
 

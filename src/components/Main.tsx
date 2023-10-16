@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuiz } from "../context/useQuiz";
 import { QuizStatus } from "../types";
 
@@ -8,7 +9,11 @@ import Results from "./Results";
 import StartContent from "./StartContent";
 
 function Main () {
-	const { status } = useQuiz();
+	const { status, fetchQuestions } = useQuiz();
+
+	useEffect(function(){
+		fetchQuestions();
+	}, [fetchQuestions]);
 
 	return (
 		<main className="main">

@@ -48,5 +48,6 @@ export type TAction =
 
 export interface TContextValue extends TState {
     allPoints: number,
+    fetchQuestions: () => Promise<void>
     dispatch: Dispatch<TAction>,
 }
